@@ -6,15 +6,15 @@
 # --+---+--
 # 7 | 8 | 9
 
-puts "Please enter Player One's name:"
-#user1 = gets.chomp
-user1 = 'Player One'
-puts "Player One's name is #{user1}."
-puts "Please enter Player Two's name:"
-#user2 = gets.chomp
-user2 = 'Player Two'
-puts "Player Two's name is #{user2}."
-
+def set_player_names
+  puts "Please enter Player One's name:"
+  #user1 = gets.chomp
+  user1 = 'Player One'
+  puts "Please enter Player Two's name:"
+  #user2 = gets.chomp
+  user2 = 'Player Two'
+  [user1, user2]
+end
 
 def make_new_board
   %w[1 2 3 4 5 6 7 8 9]
@@ -48,14 +48,12 @@ def get_choice(user)
 end
 
 def update_board(choice, user, board)
-  if user.eql?('Player One')
-    board[choice.to_i-1] = 'X'
-  else 
-    board[choice.to_i-1] = 'O'
-  end
+  board[choice.to_i-1] = user.zero? ? 'X' : 'O'
   board
 end
 
-choice = get_choice(user1)
-current_board = update_board(choice, user1, current_board)
+users = set_player_names
+puts "Player One: #{users[0]}.\nPlayer Two: #{users[1]}."
+choice = get_choice(users[0])
+current_board = update_board(choice, 0, current_board)
 display_board(current_board)
