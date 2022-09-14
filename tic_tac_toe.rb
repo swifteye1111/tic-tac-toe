@@ -5,7 +5,6 @@
 # 4 | 5 | 6
 # --+---+--
 # 7 | 8 | 9
-game_arr = %w[1 2 3 4 5 6 7 8 9]
 
 puts "Please enter Player One's name:"
 user1 = gets.chomp
@@ -15,24 +14,20 @@ user2 = gets.chomp
 puts "Player Two's name is #{user2}."
 
 def make_new_board
-  game_arr = %w[1 2 3 4 5 6 7 8 9]
+  %w[1 2 3 4 5 6 7 8 9]
 end
 
-def display_board
-  game_arr = make_new_board()
-  row_div = "\n--+---+--\n"
-  col_div = ' | '
+def display_board(board)
   game_display = ''
-  game_arr.each_with_index do |elm, i|
-    game_display += elm
+  board.each_with_index do |elm, i|
+    game_display += elm 
     if i == 2 || i == 5
-      game_display += row_div
+      game_display += "\n--+---+--\n"
     elsif i != 8
-      game_display += col_div
+      game_display += ' | '
     end
   end
   puts game_display
 end
 
-make_new_board
-display_board
+display_board(make_new_board)
