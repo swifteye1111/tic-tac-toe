@@ -37,7 +37,7 @@ class Game
       update_board(get_choice(players[i]), players[i])
       i = i.zero? ? 1 : 0
     end
-    puts "The winner is #{winner}!"
+    puts "#{winner} wins!"
   end
 
   def get_choice(p)
@@ -65,16 +65,15 @@ class Game
   end
 
   def end_game?
-    win_check.each do |arr|
-      case arr.uniq.count
-      when 2
-        if arr.all? { |i| i.is_a?(String) }
-          self.winner = 'nobody!'
+    if win_check.all? { |arr| arr.all? { |i| i.is_a?(String) } }
+      self.winner = 'No one'
+      return true
+    else
+      win_check.each do |arr|
+        if arr.uniq.count == 1
+          self.winner = arr[0] == 'X' ? @player1.name : @player2.name 
           return true
         end
-      when 1
-        self.winner = arr[0] == 'X' ? @player1.name : @player2.name
-        return true
       end
     end
     false
