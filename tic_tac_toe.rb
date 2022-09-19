@@ -2,12 +2,12 @@
 
 # Game class
 class Game
-  attr_accessor :board, :win_check
+  attr_accessor :board, :win_check, :winner
 
   def initialize
     self.board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    @win_check = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9],
-                  [1, 5, 9], [3, 5, 7]]
+    @win_check = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                  [0, 4, 8], [2, 4, 6]]
     run_game
   end
 
@@ -25,10 +25,10 @@ class Game
   end
 
   def run_game
-    self.display_board
+    display_board
     @player1 = Player.new
     @player2 = Player.new
-    self.play_round(@player1, @player2)
+    play_round(@player1, @player2)
   end
 
   def play_round(p1, p2)
@@ -36,6 +36,7 @@ class Game
     until end_game?
       update_board(get_choice(p1), p1)
     end
+    puts "The winner is #{winner}!"
   end
 
   def get_choice(p)
@@ -51,19 +52,32 @@ class Game
   
   def update_board(choice, p)
     board[choice.to_i - 1] = p.id.odd? ? 'X' : 'O'
+    win_check.each do |arr|
+      arr.each_with_index do |elm, i|
+        if elm == choice.to_i - 1
+          arr[i] = board[choice.to_i - 1]
+        end
+      end
+    end
+    p win_check
     display_board
   end
 
   def end_game?
     win_check.each do |arr|
-      arr.each do |elm|
-        unless board.include?(elm)
-          arr.delete(elm)
+      if arr.uniq.count == 2
+        if arr.include?(Integer)
+          p arr
+        else
+          self.winner = 'nobody!'
+          true
         end
-        if arr.empty? then return true end
+      elsif arr.uniq.count == 1
+        p "unique count is 1!"
+        self.winner = arr[0] == "X" ? @player1.name : @player2.name
+        return true
       end
     end
-    p win_check
     false
   end
 end
