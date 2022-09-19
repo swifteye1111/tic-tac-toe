@@ -28,13 +28,14 @@ class Game
     display_board
     @player1 = Player.new
     @player2 = Player.new
-    play_round(@player1, @player2)
+    play_round([@player1, @player2])
   end
 
-  def play_round(p1, p2)
+  def play_round(players)
     i = 0
     until end_game?
-      update_board(get_choice(p1), p1)
+      update_board(get_choice(players[i]), players[i])
+      i = i.zero? ? 1 : 0
     end
     puts "The winner is #{winner}!"
   end
@@ -46,35 +47,33 @@ class Game
       puts 'Invalid input. Please choose a number between 1-9:'
       choice = gets.chomp
     end
-    puts "You chose #{choice}!"
     choice
   end
   
   def update_board(choice, p)
     board[choice.to_i - 1] = p.id.odd? ? 'X' : 'O'
+    update_win_check(choice.to_i - 1)
+    display_board
+  end
+
+  def update_win_check(choice_index)
     win_check.each do |arr|
       arr.each_with_index do |elm, i|
-        if elm == choice.to_i - 1
-          arr[i] = board[choice.to_i - 1]
-        end
+        arr[i] = board[choice_index] if elm == choice_index
       end
     end
-    p win_check
-    display_board
   end
 
   def end_game?
     win_check.each do |arr|
-      if arr.uniq.count == 2
-        if arr.include?(Integer)
-          p arr
-        else
+      case arr.uniq.count
+      when 2
+        if arr.all? { |i| i.is_a?(String) }
           self.winner = 'nobody!'
-          true
+          return true
         end
-      elsif arr.uniq.count == 1
-        p "unique count is 1!"
-        self.winner = arr[0] == "X" ? @player1.name : @player2.name
+      when 1
+        self.winner = arr[0] == 'X' ? @player1.name : @player2.name
         return true
       end
     end
@@ -96,4 +95,4 @@ class Player
   end
 end
 
-game = Game.new
+Game.new
