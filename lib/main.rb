@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'tic_tac_toe'
+require_relative 'game'
 
 new_game = Game.new
 new_game.run_game
