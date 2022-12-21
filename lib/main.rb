@@ -3,4 +3,4 @@
 require_relative 'game'
 
 new_game = Game.new
-new_game.run_game
+new_game.play_round
