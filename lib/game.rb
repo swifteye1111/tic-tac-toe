@@ -28,9 +28,16 @@ class Game
 
   def get_choice(player)
     puts "#{player.name}: Please input a number from 1-9 that matches a space on the game board:"
-    choice = gets.chomp
-    until choice.to_i.between?(1, 9)
-      puts 'Invalid input. Please choose a number between 1-9:'
+    verify_choice(gets.chomp)
+  end
+
+  def verify_choice(choice)
+    until choice.to_i.between?(1, 9) && board[choice.to_i - 1].is_a?(Integer)
+      if board[choice.to_i - 1].is_a?(String)
+        puts 'Space already taken. Please choose an available number from the spaces remaining.'
+      else
+        puts 'Invalid input. Please choose a number between 1-9:'
+      end
       choice = gets.chomp
     end
     choice
