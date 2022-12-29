@@ -10,8 +10,8 @@ class Game
     self.board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     @win_check = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8],
                   [0, 4, 8], [2, 4, 6]]
-    @player1 = Player.new
-    @player2 = Player.new
+    @player1 = Player.new(1)
+    @player2 = Player.new(2)
   end
 
   def play_round
@@ -49,6 +49,7 @@ class Game
     display_board
   end
 
+  # updates the numbers in @board to reflect 'X's and 'O's
   def update_win_check(choice_index)
     win_check.each do |arr|
       arr.each_with_index do |elm, i|
